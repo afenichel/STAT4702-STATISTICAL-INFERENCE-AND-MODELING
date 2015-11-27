@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from google import search
 
-alftoken='Bgi0FHKWwO_Or_TC4OXSthRauj4a'
+alftoken=token
 
 def google_search(q, stop):
 	s=search(q+' stubhub events', stop=stop)
@@ -119,7 +119,8 @@ def pull_data(event_list):
 			f=open('output/json%s.txt' % start_hour, 'w')
 		for data, success, eventId in pool.imap(api_inventory, [i for i in event_list]):
 			print success, 'iteration', k, 'at', datetime.now().strftime('%y%m%d %H%M%S'), 'to file', 'output/json%s.txt' % start_hour, eventId
-			if data != '':
+			print event_list
+			if data != '' or data != None or data is not None:
 				json.dump(data, f)
 				f.write(' ||| ')
 			else:
@@ -282,7 +283,7 @@ def parse_data(j):
 			c.execute("""insert into listings values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", vals)
 			db.commit()
 			db.close()
-		print '2-data written to db for event', eventId
+		# print '2-data written to db for event', eventId
 
 
 q="""select a.eventId, 
